@@ -26,14 +26,18 @@
   "Configuration details for `swish-mode'."
   :group 'editing)
 
-(defun swish-indent-sexp ()
-  "Indent each line of the sexp starting just after point."
+(defun swish-indent-sexp (&optional endpos)
+  "Indent each line of the next sexp starting just after point.
+If ENDPOS is provided, indent until ENDPOS.  Matches signature of
+`indent-sexp'."
   (interactive)
-  (save-excursion
-    (let ((start (point)))
-      (forward-sexp 1)
-      (lsp-format-region start (point))))
-  ;; Move cursor to the start of the next sxp
+  (let ((start (point)))
+    (lsp-format-region start
+                       (or endpos
+                           (save-excursion
+                             (forward-sexp 1)
+                             (point)))))
+  ;; Move cursor to the start of the next sexp
   (forward-sexp 1)
   (backward-sexp 1))
 
