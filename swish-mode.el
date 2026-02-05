@@ -37,9 +37,16 @@ If ENDPOS is provided, indent until ENDPOS.  Matches signature of
                            (save-excursion
                              (forward-sexp 1)
                              (point)))))
-  ;; Move cursor to the start of the next sexp
-  (forward-sexp 1)
-  (backward-sexp 1))
+  ;; Move cursor to the start of the next sexp as long as it's on the same line
+  (goto-char
+   (save-excursion
+     (let ((start (point)))
+       (forward-sexp 1)
+       (backward-sexp 1)
+       (if (eq (line-number-at-pos start)
+               (line-number-at-pos (point)))
+           (point)
+         start)))))
 
 (defun swish-indent-line ()
   "Indent current line as Scheme code."
