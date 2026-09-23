@@ -1,11 +1,11 @@
-# Swish-Lint
+# Swish-Lint-Mode
 
-Swish-Lint analyzes source code to flag stylistic errors, helps
+Swish-Lint-Mode analyzes source code to flag stylistic errors, helps
 developers navigate code bases, and provides code completion.  It
 provides feedback to improve code quality during development before
-reviews and inspections.  Swish-Lint provides language features like
-auto completion, go to definition, and find all references to editors
-like Emacs and VSCode that support the [Language Server
+reviews and inspections.  Swish-Lint-Mode provides language features
+like auto completion, go to definition, and find all references to
+editors like Emacs and VSCode that support the [Language Server
 Protocol](https://microsoft.github.io/language-server-protocol/).
 
 Features include:
@@ -17,7 +17,8 @@ Features include:
 
 ## Build Requirements
 
-- [Swish](https://github.com/becls/swish) 2.6 or later built using Chez Scheme 9.6.4 or later
+- [Swish](https://github.com/becls/swish) 2.6 or later built using
+  Chez Scheme 9.6.4 or later
 
 ## Build
 
@@ -31,16 +32,21 @@ Features include:
 
 ### Configure Emacs
 
-1. Install [lsp-mode 8.0.0](https://emacs-lsp.github.io/lsp-mode/)
+```
+(use-package swish-mode
+  :load-path "/path/to/swish/lint")
+```
 
-2. Install [lsp-ui 8.0.0](https://emacs-lsp.github.io/lsp-ui/)
+#### Recommended Additional Packages
 
-3. Install [flycheck](https://www.flycheck.org/) - Flycheck version 31
+1. Install [lsp-ui 8.0.0](https://emacs-lsp.github.io/lsp-ui/)
+
+2. Install [flycheck](https://www.flycheck.org/) - Flycheck version 31
 does not work properly with lsp-mode. We recommend either using the
 non-stable MELPA url `https://melpa.org/packages/` or another package
 management system to get a newer version.
 
-4. Install [company-mode](http://company-mode.github.io/)
+3. Install [company-mode](http://company-mode.github.io/)
 
 You may also want to follow the [performance tuning instructions for
 lsp-mode](https://emacs-lsp.github.io/lsp-mode/page/performance/). As
@@ -49,6 +55,7 @@ e.g., .emacs.d/init.el or .emacs file:
 
 ```
 (require 'flycheck)
+(add-hook 'swish-mode-hook 'flycheck-mode)
 
 (require 'company)
 (setq company-minimum-prefix-length 1)
@@ -62,24 +69,9 @@ e.g., .emacs.d/init.el or .emacs file:
 
 (require 'lsp-ui)
 (add-hook 'lsp-mode-hook 'lsp-ui-mode)
-(add-hook 'scheme-mode-hook 'flycheck-mode)
 
 (setq gc-cons-threshold 100000000)
 (setq read-process-output-max (* 1024 1024))
-
-(add-to-list 'load-path "~/.emacs.d/swish-lint")
-(add-to-list 'exec-path "~/.emacs.d/swish-lint")
-(require 'lsp-swish)
-```
-
-To use Swish-Lint's indentation, bind `swish-indent-sexp` in your
-scheme mode hook:
-
-```
-(add-hook 'scheme-mode-hook
-  (function
-   (lambda ()
-     (local-set-key (kbd "C-M-q") 'swish-indent-sexp))))
 ```
 
 ## Customize Configuration

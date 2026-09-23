@@ -9,6 +9,7 @@
 ;; Also adds miscellaneous keyword highlighting that Scheme mode
 ;; doesn't have.
 
+;;; Package-Version: 0.1.0
 ;;; Package-Requires: (lsp-mode)
 
 ;;; Usage:
@@ -58,9 +59,14 @@ If ENDPOS is provided, indent until ENDPOS.  Matches signature of
       (lsp-format-region start (point))))
   (skip-chars-forward " \t"))
 
+(defvar-keymap swish-mode-map
+  :doc "Keymap for `swish-mode'."
+  "C-M-q" 'swish-indent-sexp)
+
 (define-derived-mode swish-mode scheme-mode "swish"
   "Major mode for editing Swish files."
 
+  (use-local-map swish-mode-map)
   (setq-local indent-line-function #'swish-indent-line))
 
 (add-to-list 'lsp-language-id-configuration '(swish-mode . "swish"))
